@@ -6,10 +6,8 @@ import Register from "./pages/Register";
 import Login from "./pages/Login";
 import UserDashBoards from "./dashBoards/UserDashBoard/UserDashBoards";
 import PrivateRoute from "./routes/PrivateRoute";
-import "./index.css";
 import AdminDashBoard from "./dashBoards/AdminDashBoard";
-import { Provider } from "react-redux";
-import { store } from "./redux/store";
+import "./index.css";
 
 const router = createBrowserRouter([
   {
@@ -17,10 +15,9 @@ const router = createBrowserRouter([
     element: <App />,
   },
   {
-    path:"/admin",
-    element:<AdminDashBoard/>
+    path: "/admin",
+    element: <AdminDashBoard />,
   },
- 
   {
     path: "/register",
     element: <Register />,
@@ -32,7 +29,7 @@ const router = createBrowserRouter([
   {
     path: "/userDashboard",
     element: (
-      <PrivateRoute >
+      <PrivateRoute>
         <UserDashBoards />
       </PrivateRoute>
     ),
@@ -40,7 +37,5 @@ const router = createBrowserRouter([
 ]);
 
 createRoot(document.getElementById("root")).render(
-  <Provider store={store}>
   <RouterProvider router={router} />
-  </Provider>
 );

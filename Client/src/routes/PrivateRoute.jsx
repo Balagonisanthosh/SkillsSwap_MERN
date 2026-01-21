@@ -1,9 +1,11 @@
 import React from "react";
-import { useSelector } from "react-redux";
+
 import { Navigate } from "react-router-dom";
+import { useAuthStore } from "../store/authAuthStore";
 
 const PrivateRoute = ({ children }) => {
-  const isAuthenticated =useSelector((state)=>state.auth.isAuthenticated);
+
+  const isAuthenticated = useAuthStore((state)=>state.isAuthenticated);
 
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;

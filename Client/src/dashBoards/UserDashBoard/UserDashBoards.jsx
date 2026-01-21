@@ -1,27 +1,32 @@
-import React, { useState } from "react";
-import RequestMentorForm from "./RequestMentorForm";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
-import { useEffect } from "react";
+
+import RequestMentorForm from "./RequestMentorForm";
 import MentorCard from "./MentorCard";
-import { fetchMentors } from "../../redux/slices/mentorSlice";
-import {useDispatch, useSelector} from 'react-redux';
+import { useMentorStore } from "../../store/useMentorStore";
+import { useAuthStore } from "../../store/authAuthStore";
+
+
 
 const UserDashBoards = () => {
   const [showMentorForm, setShowMentorForm] = useState(false);
- 
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
-  const {list:mentorsList,loading,error} = useSelector(
-    (state)=>state.mentors
-  );
-  
+  // ✅ SAFE Zustand selectors (NO object return)
+  const mentorsList = useMentorStore((state) => state.list);
+  const loading = useMentorStore((state) => state.loading);
+  const error = useMentorStore((state) => state.error);
+  const fetchMentors = useMentorStore((state) => state.fetchMentors);
+
+  const logout = useAuthStore((state) => state.logout);
+
+  // ✅ Fetch mentors once on mount
   useEffect(() => {
-    dispatch(fetchMentors());
-  }, [dispatch]);
+    fetchMentors();
+  }, [fetchMentors]);
 
   function handleLogOut() {
-    localStorage.removeItem("token");
+    logout();       // clears token + auth state
     navigate("/");
   }
 
@@ -61,15 +66,20 @@ const UserDashBoards = () => {
           <RequestMentorForm onClose={() => setShowMentorForm(false)} />
         </div>
       )}
+
+      {/* Mentors */}
       <div className="mt-16 px-6">
         <h2 className="text-2xl font-bold text-center text-gray-700 mb-8">
           Available Mentors
         </h2>
+
         {loading && <p className="text-center">Loading mentors...</p>}
         {error && <p className="text-center text-red-500">{error}</p>}
 
         {mentorsList.length === 0 ? (
-          <p className="text-center text-gray-500">No mentors available</p>
+          <p className="text-center text-gray-500">
+            No mentors available
+          </p>
         ) : (
           <div className="flex flex-wrap gap-6 justify-center">
             {mentorsList.map((mentor) => (

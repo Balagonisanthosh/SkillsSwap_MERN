@@ -1,15 +1,15 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { loginSuccess } from "../redux/slices/authSlice";
+import { useAuthStore } from "../store/authAuthStore";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
-  const dispatch =useDispatch();
 
+  const navigate = useNavigate();
+
+  const login = useAuthStore((state) => state.login);
 
   async function handleLoginDetails(e) {
     e.preventDefault();
@@ -29,13 +29,18 @@ const Login = () => {
 
       if (!response.ok) {
         alert(data.message || "Login failed");
-        setLoading(false);
         return;
       }
-      dispatch(loginSuccess(data.token));
-      localStorage.setItem("token", data.token);
+
+      // ✅ Update global auth state
+      login(data.token);
+
+      // 🔹 keep these if your app uses them elsewhere
       localStorage.setItem("role", data.user?.role || "user");
-      localStorage.setItem("mentorStatus", data.user?.mentorStatus || "none");
+      localStorage.setItem(
+        "mentorStatus",
+        data.user?.mentorStatus || "none"
+      );
 
       alert("Login successful");
       navigate("/userDashboard");
@@ -63,7 +68,8 @@ const Login = () => {
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            required placeholder="enter email"
+            required
+            placeholder="enter email"
             className="w-full border rounded px-3 py-2"
           />
         </div>
@@ -74,7 +80,8 @@ const Login = () => {
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            required placeholder="enter password"
+            required
+            placeholder="enter password"
             className="w-full border rounded px-3 py-2"
           />
         </div>
