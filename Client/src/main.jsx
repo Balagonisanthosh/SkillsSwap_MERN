@@ -8,6 +8,7 @@ import UserDashBoards from "./dashBoards/UserDashBoard/UserDashBoards";
 import PrivateRoute from "./routes/PrivateRoute";
 import AdminDashBoard from "./dashBoards/AdminDashBoard";
 import "./index.css";
+import Profile from "./pages/Profile";
 
 const router = createBrowserRouter([
   {
@@ -25,6 +26,11 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <Login />,
+  },
+  {
+    path:"/profile",
+    element:<Profile/>
+
   },
   {
     path: "/userDashboard",

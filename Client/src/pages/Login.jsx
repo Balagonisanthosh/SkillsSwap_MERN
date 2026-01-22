@@ -33,7 +33,7 @@ const Login = () => {
       }
 
       // ✅ Update global auth state
-      login(data.token);
+       await login(data.token);
 
       // 🔹 keep these if your app uses them elsewhere
       localStorage.setItem("role", data.user?.role || "user");

@@ -30,6 +30,10 @@ const UserDashBoards = () => {
     navigate("/");
   }
 
+  function navigateToProfile()
+  {
+    navigate("/profile");
+  }
   return (
     <div className="min-h-screen bg-gray-50 relative">
       {/* Navbar */}
@@ -39,7 +43,7 @@ const UserDashBoards = () => {
         <ul className="hidden md:flex gap-6 text-gray-600 font-medium">
           <li className="hover:text-blue-600 cursor-pointer">Home</li>
           <li className="hover:text-blue-600 cursor-pointer">Dashboard</li>
-          <li className="hover:text-blue-600 cursor-pointer">Profile</li>
+          <li className="hover:text-blue-600 cursor-pointer" onClick={()=>{navigateToProfile()}}>Profile</li>
         </ul>
 
         <button

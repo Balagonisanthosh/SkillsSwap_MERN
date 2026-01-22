@@ -146,6 +146,28 @@ const applyMentorRequest=async (req,res)=>{
 }
 }
 
+const getMyProfile = async (req,res)=>{
+  try {
+    const userId = req.user.id;
+
+    const user = await User.findById(userId).select("username email skillsYouKnown skillsYouWantToLearn");
+    if(!user)
+    {
+      return res.status(404).json({
+        message:"user not found"
+      })
+    }
+    return res.status(200).json({
+      user
+    })
+    
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      message:"internal server error"
+    })
+  }
+}
 
 
-module.exports = {register, login, applyMentorRequest}
+module.exports = {register, login, applyMentorRequest, getMyProfile}
